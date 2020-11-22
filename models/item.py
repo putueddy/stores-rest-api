@@ -1,3 +1,4 @@
+from flask import jsonify
 from db import db
 
 class ItemModel(db.Model):
@@ -15,7 +16,7 @@ class ItemModel(db.Model):
         self.store_id = store_id
     
     def json(self):
-        return {'name': self.name, 'price': self.price}
+        return jsonify({'name': self.name, 'price': self.price})
     
     @classmethod
     def find_by_name(cls, name):
