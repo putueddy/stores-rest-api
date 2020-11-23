@@ -1,4 +1,3 @@
-from flask import jsonify
 from db import db
 
 class StoreModel(db.Model):
@@ -12,13 +11,20 @@ class StoreModel(db.Model):
         self.name = name
     
     def json(self):
-        return jsonify({'name': self.name, 'item': [item.json() for item in self.items.all()]})
+        return {'id': self.id,
+                'name': self.name,
+                'item': [item.json() for item in self.items.all()]
+        }
     
     @classmethod
     def find_by_name(cls, name):
         # SELECT * FROM items WHERE name=name LIMIT 1
         return cls.query.filter_by(name=name).first() 
     
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
